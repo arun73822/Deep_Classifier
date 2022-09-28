@@ -1,0 +1,11 @@
+training_pipeline_config:
+  pipeline_name: src/deep_classifier
+  artifact_dir: artifact
+
+data_ingestion_config:
+  data_ingestion_dir: data_ingestion
+  dataset_download_url: "https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip"
+  raw_data_dir: raw_data
+  extracted_data_dir: extracted_data
+  ingested_train_dir: train
+  ingested_test_dir: test
