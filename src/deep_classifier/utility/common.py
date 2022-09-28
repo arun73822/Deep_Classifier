@@ -1,26 +1,26 @@
-import os
-import yaml
-import json
-import joblib
 from pathlib import Path
 from box import ConfigBox
 from box.exceptions import BoxValueError
 from deep_classifier import logger
 from ensure import ensure_annotations
 from typing import Any
+import os
+import yaml
+import json
+import joblib
 
 @ensure_annotations
 def read_yaml_file(file_path:Path)->ConfigBox:
 
-    """ reads yaml file and returns
+    """ 
+    reads yaml file and returns
     Args:
           file_path(str): path like input
     Raises:
           Value Error: if yaml file is empty
           e: empty file
     Returns:
-          ConfigBox: ConfigBox type
-    """
+          ConfigBox: ConfigBox type """
     try:
         with open(file_path,"r") as yaml_file:
             data=yaml.safe_load(yaml_file)
@@ -120,4 +120,13 @@ def get_size(path:Path)->str:
         return f"~{size_in_KB} KB"
     except Exception as e:
         raise e
-        
+
+"""chunk_size=1024
+response=requests.get(url=download_url,stream=True)
+total_size=int(response.headers.get('content-length'))
+with open(raw_data_file_path,"wb") as file:
+    for data in tqdm(iterable=response.iter_content(chunk_size=chunk_size),
+                                                    total=total_size/chunk_size,
+                                                    unit="KB"):
+        file.write(data)
+logger.info("Downloaded is Completed")"""
