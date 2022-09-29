@@ -1,11 +1,9 @@
-from urllib import request
 from deep_classifier import logger
 from deep_classifier.entity.config_entity import Data_Ingestion_Config
 from deep_classifier.utility.common import create_directories,get_size
 from tqdm import tqdm
 from zipfile import ZipFile
 from pathlib import Path
-import urllib.request as request
 import requests
 import os
 
