@@ -1,0 +1,8 @@
+agumentation: True
+params_image_size: [224,224,3]  # as per VGG16 base_model
+batch_size: 16
+include_top: False
+epochs: 1
+classes: 2
+weights: imagenet
+learning_rate: 0.01
