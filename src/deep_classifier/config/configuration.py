@@ -1,8 +1,10 @@
+import tensorboard
 from deep_classifier import logger
 from deep_classifier.constants import *
 from deep_classifier.utility.common import read_yaml_file
 from deep_classifier.entity.config_entity import (Training_Pipeline_Config,Data_Ingestion_Config,
-                                                  Prepare_Base_Model_Config)
+                                                  Prepare_Base_Model_Config,Prepare_Callbacks_Config,
+                                                  Model_Training_Config)
 from pathlib import Path
 import os
 
@@ -29,7 +31,7 @@ class Configuration:
                 training_pipeline_config_info.artifact_dir,
             )
             training_pipeline_config = Training_Pipeline_Config(
-                artifacr_dir=artifact_dir
+                artifact_dir=artifact_dir
             )
             logger.info(f"Training pipleine config: {training_pipeline_config}")
             return training_pipeline_config
@@ -39,7 +41,7 @@ class Configuration:
     def get_data_ingestion_config(self) -> Data_Ingestion_Config:
         try:
             data_ingestion_config_info = self.config_info.data_ingestion_config
-            artifact_dir = self.traning_pipeline_config.artifacr_dir
+            artifact_dir = self.traning_pipeline_config.artifact_dir
             data_ingestion_artifact_dir = os.path.join(
                 artifact_dir, data_ingestion_config_info.data_ingestion_dir
             )
@@ -52,8 +54,7 @@ class Configuration:
                 data_ingestion_config_info.extracted_data_dir,
             )
             traning_data_dir = os.path.join(
-                data_ingestion_artifact_dir,
-                data_ingestion_config_info.ingested_train_dir,
+                extracted_data_dir,"PetImages"
             )
             testing_data_dir = os.path.join(
                 data_ingestion_artifact_dir,
@@ -75,7 +76,7 @@ class Configuration:
 
     def get_prepare_base_model_config(self)->Prepare_Base_Model_Config:
         try:
-            artifact_dir=self.traning_pipeline_config.artifacr_dir
+            artifact_dir=self.traning_pipeline_config.artifact_dir
             prepare_base_model_config_info=self.config_info.prepare_base_model_config
             prepare_base_model_config_dir=os.path.join(artifact_dir,
                                             prepare_base_model_config_info.prepare_base_model_dir)
@@ -85,11 +86,8 @@ class Configuration:
             updated_model_dir=os.path.join(prepare_base_model_config_dir,
                                            prepare_base_model_config_info.updated_model_dir)
             updated_model_file_name=prepare_base_model_config_info.updated_model_file_name
-            params_agumentation=self.params_file_info.agumentation
-            params_image_size=self.params_file_info.params_image_size
-            params_batch_size=self.params_file_info.batch_size
+            updated_model_file_path=os.path.join(updated_model_dir,updated_model_file_name)
             params_include_top=self.params_file_info.include_top
-            params_epochs=self.params_file_info.epochs
             params_weights=self.params_file_info.weights
             params_classes=self.params_file_info.classes
             params_learning_rate=self.params_file_info.learning_rate
@@ -99,11 +97,8 @@ class Configuration:
                                                     base_model_file_name=base_model_file_name,
                                                     updated_model_dir=updated_model_dir,
                                                     updated_model_file_name=updated_model_file_name,
-                                                    params_agumentation=params_agumentation,
-                                                    params_image_size=params_image_size,
-                                                    params_batch_size=params_batch_size,
+                                                    updated_model_file_path=updated_model_file_path,
                                                     params_include_top=params_include_top,
-                                                    params_epochs=params_epochs,
                                                     params_classes=params_classes,
                                                     params_weights=params_weights,
                                                     params_learning_rate=params_learning_rate)
@@ -111,3 +106,61 @@ class Configuration:
             return prepare_base_model_config
         except Exception as e:
             raise e
+    
+    def get_prepare_callbacks(self)->Prepare_Callbacks_Config:
+        try:
+            artifact_dir=self.traning_pipeline_config.artifact_dir
+            prepare_callbacks_config_info=self.config_info.prepare_callbacks_config
+            prepare_callbacks_dir=os.path.join(artifact_dir,
+                                    prepare_callbacks_config_info.prepare_callbacks_dir)
+            tensorboard_log_dir=os.path.join(prepare_callbacks_dir,
+                                    prepare_callbacks_config_info.tensorboard_log_dir)
+            model_checkpoint_dir=os.path.join(prepare_callbacks_dir,
+                                    prepare_callbacks_config_info.model_checkpoint_dir)
+            model_checkpoint_file_name=prepare_callbacks_config_info.model_checkpoint_file_name
+            prepare_callbacks_config=Prepare_Callbacks_Config(
+                                                    prepare_callbacks_dir=prepare_callbacks_dir,
+                                                    tensorboard_log_dir=tensorboard_log_dir,
+                                                    model_checkpoint_dir=model_checkpoint_dir,
+                                                    model_checkpoint_file_name=model_checkpoint_file_name)
+            logger.info(f"Prepare Callbacks Config: {prepare_callbacks_config}")
+            return prepare_callbacks_config
+        except Exception as e:
+            raise e
+    
+    def get_model_training_config(self)->Model_Training_Config:
+        try:
+            artifact_dir = self.traning_pipeline_config.artifact_dir
+            data_ingestion_config_info = self.config_info.data_ingestion_config
+            data_ingestion_artifact_dir = os.path.join(artifact_dir, 
+                                                       data_ingestion_config_info.data_ingestion_dir)
+            extracted_data_dir = os.path.join(data_ingestion_artifact_dir,
+                                              data_ingestion_config_info.extracted_data_dir)
+            prepare_base_model_config_info=self.config_info.prepare_base_model_config
+            prepare_base_model_config_dir=os.path.join(artifact_dir,
+                                            prepare_base_model_config_info.prepare_base_model_dir)
+            updated_model_dir=os.path.join(prepare_base_model_config_dir,
+                                           prepare_base_model_config_info.updated_model_dir)
+            updated_model_file_name=prepare_base_model_config_info.updated_model_file_name
+            updated_model_file_path=os.path.join(updated_model_dir,updated_model_file_name)
+            model_training_config_info=self.config_info.model_training_config
+            model_training_dir=os.path.join(artifact_dir,model_training_config_info.model_training_dir)
+            model_training_file_name=model_training_config_info.model_file_name
+            params_agumentation=self.params_file_info.agumentation
+            params_image_size=self.params_file_info.params_image_size
+            params_batch_size=self.params_file_info.batch_size
+            params_epochs=self.params_file_info.epochs
+            training_data_path=os.path.join(extracted_data_dir,"PetImages")
+            model_training_config=Model_Training_Config(model_training_dir=model_training_dir,
+                                                        model_training_file_name=model_training_file_name,
+                                                        params_agumentation=params_agumentation,
+                                                        params_batch_size=params_batch_size,
+                                                        params_epochs=params_epochs,
+                                                        params_image_size=params_image_size,
+                                                        updated_base_model_path=updated_model_file_path,
+                                                        training_data_path=training_data_path)
+            logger.info(f"Model Training Config: {model_training_config}")
+            return model_training_config
+        except Exception as e:
+            raise e
+            
