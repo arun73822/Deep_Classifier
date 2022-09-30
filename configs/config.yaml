@@ -16,4 +16,14 @@ prepare_base_model_config:
   base_model_file_name: base_model.h5
   updated_model_dir: updated_model
   updated_model_file_name: updated_model.h5
-  params_image_size: 
+  
+prepare_callbacks_config:
+  prepare_callbacks_dir: prepare_callbacks
+  tensorboard_log_dir: tensorboard_log
+  model_checkpoint_dir: model_checkpoint
+  model_checkpoint_file_name: model.h5
+
+model_training_config:
+  model_training_dir: trained_model
+  model_file_name: model.h5
+  
