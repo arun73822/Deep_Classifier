@@ -25,7 +25,7 @@ class Prepare_Base_Model:
             self.base_model=tf.keras.applications.vgg16.VGG16(input_shape=image_size,
                                                               include_top=include_top,
                                                               weights=weights)
-            self.save_model(path=base_model_path,model=self.base_model)
+            self.save_model(path=Path(base_model_path),model=self.base_model)
         except Exception as e:
             raise e
     def update_base_model(self):
@@ -38,7 +38,7 @@ class Prepare_Base_Model:
             updated_base_model_dir=self.prepare_base_model_config.updated_model_dir
             updated_base_model_name=self.prepare_base_model_config.updated_model_file_name
             updated_base_path=os.path.join(updated_base_model_dir,updated_base_model_name)
-            self.save_model(path=updated_base_path,model=self.full_model)
+            self.save_model(path=Path(updated_base_path),model=self.full_model)
         except Exception as e:
             raise e
     
