@@ -1,0 +1,30 @@
+stages:
+  data_ingestion:
+    cmd: src/deep_classifier/pipeline/stage01_data_ingestion.py
+    deps:
+      - src/deep_classifier/pipeline/stage01_data_ingestion.py
+      - configs/config.yaml
+    outs:
+      - src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages
+  
+  prepare_base_model:
+    cmd: src/deep_classifier/pipeline/stage02_prepare_base_model.py
+    deps:
+      - src/deep_classifier/pipeline/stage02_prepare_base_model.py
+      - configs/config.yaml
+      - params.yaml
+    outs:
+      - src/deep_classifier/artifact/prepare_base_model/base_model
+      - src/deep_classifier/artifact/prepare_base_model/updated_model
+  
+  model_training:
+    cmd: src/deep_classifier/pipeline/stage_03_training.py
+    deps:
+      - src/deep_classifier/pipeline/stage_03_training.py
+      - configs/config.yaml
+      - params.yaml
+      - src/deep_classifier/artifact/prepare_base_model/updated_model
+      - src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages
+    outs:
+      - src/deep_classifier/artifact/prepare_callbacks/model_checkpoint
+      - src/deep_classifier/artifact/prepare_callbacks/tensorboard_log
