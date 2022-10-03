@@ -120,13 +120,3 @@ def get_size(path:Path)->str:
         return f"~{size_in_KB} KB"
     except Exception as e:
         raise e
-
-"""chunk_size=1024
-response=requests.get(url=download_url,stream=True)
-total_size=int(response.headers.get('content-length'))
-with open(raw_data_file_path,"wb") as file:
-    for data in tqdm(iterable=response.iter_content(chunk_size=chunk_size),
-                                                    total=total_size/chunk_size,
-                                                    unit="KB"):
-        file.write(data)
-logger.info("Downloaded is Completed")"""

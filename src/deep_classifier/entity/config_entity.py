@@ -24,6 +24,7 @@ class Prepare_Base_Model_Config:
     updated_model_dir: Path
     updated_model_file_name: str
     updated_model_file_path: Path
+    params_image_size: list
     params_include_top: bool
     params_classes: int
     params_weights: str
@@ -47,3 +48,11 @@ class Model_Training_Config:
     params_agumentation: bool
     params_batch_size: int
     params_epochs: int
+
+@dataclass(frozen=True)
+class Model_Evaluation_Config:
+    trained_model_path: Path
+    training_data_file_path: Path
+    params_image_size: list
+    params_batch_size: int
+    

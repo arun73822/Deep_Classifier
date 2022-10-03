@@ -20,4 +20,17 @@
 10.Update the dvc.yaml
 11.run "dvc repro" for running all the stages in pipeline
 
+
 ![img]( https://github.com/arun73822/Deep_Classifier/blob/master/Data%20Ingestion%402x%20(1).png )
+
+
+
+# to run dvc.yaml
+dvc init
+dvc repro 
+dvc dag
+
+# environment
+rm -rf ./env/  --> forcefully remove the environment
+rm ~/.condaarc --> Any unwanted font display in the terminal
+conda config --set env_promt "({name})"

@@ -4,7 +4,7 @@ from deep_classifier.constants import *
 from deep_classifier.utility.common import read_yaml_file
 from deep_classifier.entity.config_entity import (Training_Pipeline_Config,Data_Ingestion_Config,
                                                   Prepare_Base_Model_Config,Prepare_Callbacks_Config,
-                                                  Model_Training_Config)
+                                                  Model_Training_Config,Model_Evaluation_Config)
 from pathlib import Path
 import os
 
@@ -87,6 +87,7 @@ class Configuration:
                                            prepare_base_model_config_info.updated_model_dir)
             updated_model_file_name=prepare_base_model_config_info.updated_model_file_name
             updated_model_file_path=os.path.join(updated_model_dir,updated_model_file_name)
+            params_image_size=self.params_file_info.params_image_size
             params_include_top=self.params_file_info.include_top
             params_weights=self.params_file_info.weights
             params_classes=self.params_file_info.classes
@@ -98,6 +99,7 @@ class Configuration:
                                                     updated_model_dir=updated_model_dir,
                                                     updated_model_file_name=updated_model_file_name,
                                                     updated_model_file_path=updated_model_file_path,
+                                                    params_image_size=params_image_size,
                                                     params_include_top=params_include_top,
                                                     params_classes=params_classes,
                                                     params_weights=params_weights,
@@ -163,4 +165,17 @@ class Configuration:
             return model_training_config
         except Exception as e:
             raise e
-            
+    
+    def get_model_evaluation_config(self)->Model_Evaluation_Config:
+        try:
+            model_evaluation_config_info=self.config_info.model_evaluation.config
+            model_training_path=model_evaluation_config_info.trained_model_path
+            training_data_file_path=model_evaluation_config_info.training_data_file_path
+            model_evaluation_config=Model_Evaluation_Config(
+                                                trained_model_path=model_training_path,
+                                                training_data_file_path=training_data_file_path,
+                                                params_image_size=self.params_file_info.params_image_size,
+                                                params_batch_size=self.params_file_info.params_batch_size)
+            return model_evaluation_config
+        except Exception as e:
+            raise e

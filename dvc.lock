@@ -1,0 +1,79 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/deep_classifier/pipeline/stage01_data_ingestion.py
+    deps:
+    - path: configs/config.yaml
+      md5: 096ce1914e853a07eebf22504c1212d4
+      size: 1080
+    - path: src/deep_classifier/pipeline/stage01_data_ingestion.py
+      md5: 3c8f559583d1aada09074e81aae8180c
+      size: 726
+    outs:
+    - path: src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages
+      md5: 3a5cf86541f22c236620ce5b952ad684.dir
+      size: 848866410
+      nfiles: 24998
+  prepare_base_model:
+    cmd: python src/deep_classifier/pipeline/stage02_prepare_base_model.py
+    deps:
+    - path: configs/config.yaml
+      md5: 096ce1914e853a07eebf22504c1212d4
+      size: 1080
+    - path: src/deep_classifier/pipeline/stage02_prepare_base_model.py
+      md5: 08cbb47890bb4a9c1605509a82c49e6b
+      size: 768
+    params:
+      params.yaml:
+        classes: 2
+        include_top: false
+        learning_rate: 0.01
+        params_image_size:
+        - 224
+        - 224
+        - 3
+        weights: imagenet
+    outs:
+    - path: src/deep_classifier/artifact/prepare_base_model/base_model
+      md5: d604d364bf613fd614c495ef113507bf.dir
+      size: 58920408
+      nfiles: 1
+    - path: src/deep_classifier/artifact/prepare_base_model/updated_model
+      md5: 8bb5363d879357921216f31e87c9f324.dir
+      size: 59132960
+      nfiles: 1
+  model_training:
+    cmd: python src/deep_classifier/pipeline/stage_03_training.py
+    deps:
+    - path: configs/config.yaml
+      md5: 096ce1914e853a07eebf22504c1212d4
+      size: 1080
+    - path: src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages
+      md5: 3a5cf86541f22c236620ce5b952ad684.dir
+      size: 848866410
+      nfiles: 24998
+    - path: src/deep_classifier/artifact/prepare_base_model/updated_model
+      md5: 8bb5363d879357921216f31e87c9f324.dir
+      size: 59132960
+      nfiles: 1
+    - path: src/deep_classifier/pipeline/stage_03_training.py
+      md5: 4a99e9ef2120520a765f589618f69afb
+      size: 1020
+    params:
+      params.yaml:
+        agumentation: true
+        batch_size: 16
+        epochs: 1
+        params_image_size:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: src/deep_classifier/artifact/prepare_callbacks/model_checkpoint
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
+    - path: src/deep_classifier/artifact/prepare_callbacks/tensorboard_log
+      md5: d5e5946f8c691069188235d9bc155ecc.dir
+      size: 74742
+      nfiles: 1

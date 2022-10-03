@@ -136,3 +136,6 @@ dmypy.json
 *.jpg
 *.zip
 *.h5
+/model_checkpoint
+/tensorboard_log
+.gitignore
