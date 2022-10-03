@@ -28,5 +28,5 @@ model_training_config:
   model_file_name: model.h5
 
 model_evaluation_config:
-  trained_model_path: ""
+  trained_model_path: "src\deep_classifier\artifact\trained_model\model.h5"
   training_data_file_path: "src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages"
