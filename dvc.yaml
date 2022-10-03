@@ -37,3 +37,16 @@ stages:
     outs:
       - src/deep_classifier/artifact/prepare_callbacks/model_checkpoint
       - src/deep_classifier/artifact/prepare_callbacks/tensorboard_log
+  
+  model_evaluation:
+    cmd: python src/deep_classifier/pipeline/stage_04_model_evaluation.py
+    deps:
+      - src/deep_classifier/pipeline/stage_04_model_evaluation.py
+      - configs/config.yaml
+      - src/deep_classifier/artifact/trained_model/model.h5
+      - src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages
+    params:
+      - params_image_size
+      - batch_size
+    outs:
+      - src/deep_classifier/artifact/trained_model/model.h5
