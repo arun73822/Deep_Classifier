@@ -1,9 +1,9 @@
-[buid-system]
+[build-system]
 requires= ["setuptools>=42.0","wheel"]
-buid-backend="setuptools.build_meta"
+build-backend="setuptools.build_meta"
 
 [tool.pytest.ini_options]
-tests_paths=[
+testpaths=[
     "tests"
 ]
 
