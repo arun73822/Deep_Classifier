@@ -4,7 +4,8 @@ from deep_classifier.constants import *
 from deep_classifier.utility.common import read_yaml_file
 from deep_classifier.entity.config_entity import (Training_Pipeline_Config,Data_Ingestion_Config,
                                                   Prepare_Base_Model_Config,Prepare_Callbacks_Config,
-                                                  Model_Training_Config,Model_Evaluation_Config)
+                                                  Model_Training_Config,Model_Evaluation_Config,
+                                                  Model_Prediction_Service_Config)
 from pathlib import Path
 import os
 
@@ -177,5 +178,15 @@ class Configuration:
                                                 params_image_size=self.params_file_info.params_image_size,
                                                 params_batch_size=self.params_file_info.params_batch_size)
             return model_evaluation_config
+        except Exception as e:
+            raise e
+    
+    def get_model_prediction_service(self)->Model_Prediction_Service_Config:
+        try:
+            model_prediction_service_config_info=self.config_info.model_prediction_service_config
+            trained_model_file_path=model_prediction_service_config_info.trained_model_path
+            model_prediction_service_config=Model_Prediction_Service_Config(
+                                                  trained_model_path=trained_model_file_path)
+            return model_prediction_service_config
         except Exception as e:
             raise e

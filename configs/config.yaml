@@ -30,3 +30,6 @@ model_training_config:
 model_evaluation_config:
   trained_model_path: "src\deep_classifier\artifact\trained_model\model.h5"
   training_data_file_path: "src/deep_classifier/artifact/data_ingestion/extracted_data/PetImages"
+
+model_prediction_service_config:
+  trained_model_path: "src\deep_classifier\artifact\trained_model\model.h5"

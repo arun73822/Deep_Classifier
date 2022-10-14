@@ -55,4 +55,7 @@ class Model_Evaluation_Config:
     training_data_file_path: Path
     params_image_size: list
     params_batch_size: int
-    
+
+@dataclass(frozen=True)
+class Model_Prediction_Service_Config:
+    trained_model_path: Path

@@ -14,7 +14,7 @@ class Model_Evaluation:
     
     def initiate_model_evaluation(self):
         try:
-            model=self.load_model(path=self.model_evaluation_config_info.trained_model_path)
+            model=self.load_model(path=self.model_evaluation_config.trained_model_path)
             self._valid_generator()
             self.score=model.evaluate(self.valid_datagenerator)
         except Exception as e:
