@@ -135,7 +135,7 @@ dmypy.json
 .log
 *.jpg
 *.zip
-*.h5
 /model_checkpoint
 /tensorboard_log
 .gitignore
+src/deep_classifier/artifact/trained_model/model.h5
